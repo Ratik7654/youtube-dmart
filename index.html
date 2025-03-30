@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Services Purchase</title>
+    <style>
+        :root {
+            --primary: #FF4D4D;
+            --secondary: #2E2E2E;
+            --accent: #4A90E2;
+            --light: #F8F8F8;
+            --dark: #1A1A1A;
+            --success: #4CAF50;
+            --warning: #FF9800;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FAFAFA;
+            color: var(--dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            color: var(--secondary);
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0 20px;
+            border: 1px solid #E0E0E0;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+            outline: none;
+        }
+        
+        .service-card {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .service-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .service-title span {
+            font-size: 20px;
+        }
+        
+        .service-option {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .service-option input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .service-option label {
+            flex: 1;
+        }
+        
+        .amount-summary {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .amount-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        
+        .total-row {
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--primary);
+            border-top: 1px dashed #CCC;
+            padding-top: 10px;
+            margin-top: 15px;
+        }
+        
+        .payment-section {
+            background: #FFF9F9;
+            border: 1px solid #FFE5E5;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        
+        .qr-code {
+            max-width: 200px;
+            margin: 15px auto;
+            display: block;
+            border: 1px solid #EEE;
+            padding: 10px;
+            background: white;
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #FF3333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.3);
+        }
+        
+        /* Invoice Styles */
+        #invoice {
+            display: none;
+            margin-top: 50px;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+        
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .invoice-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .invoice-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .invoice-customer {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+        
+        .invoice-table th {
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .invoice-table td {
+            padding: 12px;
+            border-bottom: 1px solid #EEE;
+        }
+        
+        .invoice-total {
+            text-align: right;
+            margin-top: 30px;
+        }
+        
+        .total-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .invoice-footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .download-btn {
+            background: var(--secondary);
+            margin-top: 20px;
+        }
+        
+        .download-btn:hover {
+            background: #1A1A1A;
+        }
+        
+        .share-link {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .share-link input {
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">YouTube D-Mart</div>
+            <div class="tagline">Premium YouTube Growth Solutions</div>
+        </div>
+        
+        <form id="orderForm">
+            <div class="form-section">
+                <h2 class="section-title">Customer Details</h2>
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="tel" name="mobile" placeholder="Mobile Number" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="url" name="youtubeLink" placeholder="YouTube Channel Link" required>
+            </div>
+            
+            <div class="form-section">
+                <h2 class="section-title">Select Services</h2>
+                
+                <div class="service-card">
+                    <div class="service-title">
+                        <span>📈</span>
+                        <div>Subscribers</div>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="subs1" name="subscribers" value="300" onchange="calculateTotal()">
+                        <label for="subs1">100 Subscribers - ₹300</label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="subs2" name="subscribers" value="500" onchange="calculateTotal()">
+                        <label for="subs2">250 Subscribers - ₹500</label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="subs3" name="subscribers" value="800" onchange="calculateTotal()">
+                        <label for="subs3">500 Subscribers - ₹800</label>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-title">
+                        <span>👀</span>
+                        <div>Views</div>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="views1" name="views" value="250" onchange="calculateTotal()">
+                        <label for="views1">1,000 Views - ₹250</label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="views2" name="views" value="450" onchange="calculateTotal()">
+                        <label for="views2">5,000 Views - ₹450</label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="views3" name="views" value="800" onchange="calculateTotal()">
+                        <label for="views3">10,000 Views - ₹800</label>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-title">
+                        <span>⏱️</span>
+                        <div>Watch Time</div>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="watch1" name="watchtime" value="400" onchange="calculateTotal()">
+                        <label for="watch1">100 Hours - ₹400</label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="watch2" name="watchtime" value="700" onchange="calculateTotal()">
+                        <label for="watch2">250 Hours - ₹700</label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="watch3" name="watchtime" value="1200" onchange="calculateTotal()">
+                        <label for="watch3">500 Hours - ₹1200</label>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-title">
+                        <span>🎥</span>
+                        <div>Live Streaming</div>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="live1" name="livestream" value="500" onchange="calculateTotal()">
+                        <label for="live1">Basic Setup - ₹500</label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="live2" name="livestream" value="1000" onchange="calculateTotal()">
+                        <label for="live2">Premium Setup - ₹1000</label>
+                    </div>
+                    <div class="service-option">
+                        <input type="checkbox" id="live3" name="livestream" value="1500" onchange="calculateTotal()">
+                        <label for="live3">Complete Package - ₹1500</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="amount-summary">
+                <h2 class="section-title">Order Summary</h2>
+                <div class="amount-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">₹0.00</span>
+                </div>
+                <div class="amount-row discount">
+                    <span>Discount (15%):</span>
+                    <span id="discount">-₹0.00</span>
+                </div>
+                <div class="amount-row total-row">
+                    <span>Total Amount:</span>
+                    <span id="total">₹0.00</span>
+                </div>
+                
+                <input type="hidden" id="subtotalAmount" name="subtotalAmount" value="0">
+                <input type="hidden" id="discountAmount" name="discountAmount" value="0">
+                <input type="hidden" id="totalAmount" name="totalAmount" value="0">
+            </div>
+            
+            <div class="payment-section">
+                <h2 class="section-title">Payment Details</h2>
+                <p style="text-align: center;">Please complete payment to generate your invoice</p>
+                <div style="text-align: center; font-weight: 600; margin: 15px 0;">UPI ID: rk143942-2@okicici</div>
+                <img src="IMG-20250217-WA0000.jpg" class="qr-code" alt="UPI QR Code">
+                <p style="text-align: center; font-size: 14px; color: #666;">Scan to pay with any UPI app</p>
+                
+                <div style="margin-top: 25px;">
+                    <label style="font-weight: 600;">Upload Payment Screenshot (required)</label>
+                    <input type="file" name="paymentProof" accept="image/*" required style="margin-top: 8px;">
+                </div>
+            </div>
+            
+            <button type="button" class="btn" onclick="submitOrder()">Complete Payment & Generate Invoice</button>
+            
+            <div class="share-link">
+                <p>Share this form with customers:</p>
+                <input type="text" id="shareableLink" readonly style="width: 100%; padding: 10px; border: 1px solid #E0E0E0; border-radius: 6px; background: #F8F8F8;">
+                <button type="button" onclick="copyShareLink()" style="margin-top: 10px; padding: 8px 15px; background: #4A90E2; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Link</button>
+            </div>
+        </form>
+        
+        <div id="invoice">
+            <div class="invoice-header">
+                <div class="invoice-logo">YouTube D-Mart</div>
+                <div style="color: #777; font-size: 14px; letter-spacing: 1px;">INVOICE</div>
+            </div>
+            
+            <div class="invoice-meta">
+                <div>
+                    <div style="font-weight: 600;">Invoice #: <span id="invoice-number">INV-2025001</span></div>
+                    <div>Date: <span id="invoice-date">20/05/2024</span></div>
+                </div>
+            </div>
+            
+            <div class="invoice-customer">
+                <div style="font-weight: 600; margin-bottom: 10px;">Customer Details</div>
+                <div>Name: <span id="invoice-name">Rahul Kumar</span></div>
+                <div>Mobile: <span id="invoice-mobile">9876543210</span></div>
+                <div>Email: <span id="invoice-email">customer@example.com</span></div>
+                <div>YouTube Channel: <span id="invoice-channel">https://youtube.com/channel/...</span></div>
+            </div>
+            
+            <table class="invoice-table" id="invoice-items">
+                <tr>
+                    <th>Service</th>
+                    <th>Amount</th>
+                </tr>
+                <!-- Items will be added here -->
+            </table>
+            
+            <div class="invoice-total">
+                <div style="margin-bottom: 10px;">Subtotal: <span id="invoice-subtotal">₹0.00</span></div>
+                <div style="margin-bottom: 10px;">Discount (15%): <span id="invoice-discount">-₹0.00</span></div>
+                <div class="total-amount">Total: <span id="invoice-total">₹0.00</span></div>
+            </div>
+            
+            <div class="invoice-footer">
+                <div>Thank you for your business!</div>
+                <div style="margin-top: 10px;">Payment Status: <span style="color: var(--warning); font-weight: 600;">Verification Pending</span></div>
+                <div style="font-size: 13px; margin-top: 5px;">Confirmation will be sent on your email</div>
+            </div>
+            
+            <button class="btn download-btn" onclick="downloadPDF()">Download Invoice as PDF</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize jsPDF
+        const { jsPDF } = window.jspdf;
+        
+        // Generate shareable link
+        document.getElementById('shareableLink').value = window.location.href;
+        
+        function copyShareLink() {
+            const linkInput = document.getElementById('shareableLink');
+            linkInput.select();
+            document.execCommand('copy');
+            alert('Link copied to clipboard!');
+        }
+        
+        function calculateTotal() {
+            let subtotal = 0;
+            let selectedServices = [];
+            
+            // Get all checked services
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            checkboxes.forEach(checkbox => {
+                const price = parseInt(checkbox.value);
+                subtotal += price;
+                
+                const serviceName = checkbox.parentElement.querySelector('label').textContent.split(' - ')[0];
+                selectedServices.push({
+                    name: serviceName,
+                    price: price
+                });
+            });
+            
+            const discount = subtotal * 0.15;
+            const total = subtotal - discount;
+            
+            document.getElementById('subtotal').textContent = '₹' + subtotal.toFixed(2);
+            document.getElementById('discount').textContent = '-₹' + discount.toFixed(2);
+            document.getElementById('total').textContent = '₹' + total.toFixed(2);
+            
+            document.getElementById('subtotalAmount').value = subtotal.toFixed(2);
+            document.getElementById('discountAmount').value = discount.toFixed(2);
+            document.getElementById('totalAmount').value = total.toFixed(2);
+        }
+        
+        function submitOrder() {
+            const form = document.getElementById('orderForm');
+            const paymentProof = form.elements['paymentProof'];
+            
+            if (!form.checkValidity()) {
+                alert('Please fill all required fields and upload payment proof');
+                return;
+            }
+            
+            // Generate invoice
+            generateInvoice();
+            
+            // Send email notification
+            sendEmailNotification();
+            
+            // Show invoice
+            document.getElementById('invoice').style.display = 'block';
+            
+            // Scroll to invoice
+            document.getElementById('invoice').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function generateInvoice() {
+            const form = document.getElementById('orderForm');
+            const now = new Date();
+            
+            // Set invoice number and date
+            document.getElementById('invoice-number').textContent = 'INV-' + now.getFullYear() + (now.getMonth()+1).toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0') + '-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            document.getElementById('invoice-date').textContent = now.toLocaleDateString('en-IN');
+            
+            // Set customer details
+            document.getElementById('invoice-name').textContent = form.elements['name'].value;
+            document.getElementById('invoice-mobile').textContent = form.elements['mobile'].value;
+            document.getElementById('invoice-email').textContent = form.elements['email'].value;
+            document.getElementById('invoice-channel').textContent = form.elements['youtubeLink'].value;
+            
+            // Get selected services
+            const itemsTable = document.getElementById('invoice-items');
+            itemsTable.innerHTML = `
+                <tr>
+                    <th>Service</th>
+                    <th>Amount</th>
+                </tr>
+            `;
+            
+            let subtotal = 0;
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            checkboxes.forEach(checkbox => {
+                const price = parseInt(checkbox.value);
+                subtotal += price;
+                
+                const serviceName = checkbox.parentElement.querySelector('label').textContent.split(' - ')[0];
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${serviceName}</td>
+                    <td>₹${price.toFixed(2)}</td>
+                `;
+                itemsTable.appendChild(row);
+            });
+            
+            const discount = subtotal * 0.15;
+            const total = subtotal - discount;
+            
+            document.getElementById('invoice-subtotal').textContent = '₹' + subtotal.toFixed(2);
+            document.getElementById('invoice-discount').textContent = '-₹' + discount.toFixed(2);
+            document.getElementById('invoice-total').textContent = '₹' + total.toFixed(2);
+        }
+        
+        function sendEmailNotification() {
+            const form = document.getElementById('orderForm');
+            const invoiceNumber = document.getElementById('invoice-number').textContent;
+            const customerEmail = form.elements['email'].value;
+            
+            // This uses SMTPJS.com service - you'll need to configure it with your email
+            Email.send({
+                Host: "smtp.your-email-provider.com",
+                Username: "your-email@example.com",
+                Password: "your-email-password",
+                To: "ytdhamaka65@gmail.com",
+                From: "noreply@youtubedmart.com",
+                Subject: `New Order Received - ${invoiceNumber}`,
+                Body: `A new order has been placed by ${form.elements['name'].value}. Invoice number: ${invoiceNumber}. Total amount: ${document.getElementById('invoice-total').textContent}`
+            });
+            
+            // Also send to customer
+            Email.send({
+                Host: "smtp.your-email-provider.com",
+                Username: "your-email@example.com",
+                Password: "your-email-password",
+                To: customerEmail,
+                From: "noreply@youtubedmart.com",
+                Subject: `Your YouTube D-Mart Order #${invoiceNumber}`,
+                Body: `Thank you for your order! Your invoice number is ${invoiceNumber}. We will process your order after payment verification.`
+            });
+        }
+        
+        function downloadPDF() {
+            const invoice = document.getElementById('invoice');
+            
+            html2canvas(invoice).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 295; // A4 height in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+                
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                pdf.save('YouTube_DMart_Invoice_' + document.getElementById('invoice-number').textContent + '.pdf');
+            });
+        }
+    </script>
+</body>
+</html>
